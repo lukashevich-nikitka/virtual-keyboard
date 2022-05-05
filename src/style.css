@@ -1,0 +1,187 @@
+.keyboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.keyboard-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    gap: 10px;
+    height: fit-content;
+    border-radius: 20px;
+    margin: auto;
+    padding: 20px;
+    font-size: 35px;
+    text-align: center;
+    line-height: 90px;
+    background-color: lavender;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lavender;
+}
+
+.keys {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+}
+
+.minus {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+    order: 1;
+}
+
+.plus {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+    order: 1;
+}
+
+.open-slash {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+    order: 1;
+}
+
+.close-bracket {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+    order: 1;
+}
+
+.open-bracket {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+    order: 1;
+}
+
+.semicolon {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+    order: 1;
+}
+
+.tick {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+    order: 1;
+}
+
+.open-slash-two {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+    order: -1;
+}
+
+.backspace {
+    width: 210px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+    order: 1;
+}
+
+.enter {
+    width: 210px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+    order: 1;
+}
+
+.left-shift {
+    width: 210px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+    order: -1;
+}
+
+.big-size-keys {
+    width: 210px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+}
+
+.tab {
+    width: 100px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+}
+
+.left-ctrl {
+    width: 100px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+}
+
+.right-ctrl {
+    width: 100px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+}
+
+.del {
+    width: 100px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray; 
+    order: 1;
+}
+
+.capslock {
+    width: 190px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+}
+
+.space {
+    width: 690px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+}
+
+textarea {
+    font-size: 50px;
+    width: 1550px;
+    height: 350px;
+    border-radius: 30px;
+    margin: auto;
+}
+
+.active-key {
+    background-color: aliceblue;
+}
+
+
