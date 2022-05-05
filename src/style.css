@@ -1,3 +1,9 @@
+.keyboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
 .keyboard-wrapper {
     display: flex;
     flex-direction: column;
@@ -11,7 +17,6 @@
     text-align: center;
     line-height: 90px;
     background-color: lavender;
-
 }
 
 .row {
@@ -124,7 +129,21 @@
     background-color: lightslategray;
 }
 
-.midle-size-keys {
+.tab {
+    width: 100px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+}
+
+.left-ctrl {
+    width: 100px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+}
+
+.right-ctrl {
     width: 100px;
     height: 90px;
     border-radius: 20px;
@@ -151,6 +170,18 @@
     height: 90px;
     border-radius: 20px;
     background-color: lightslategray;
+}
+
+textarea {
+    font-size: 50px;
+    width: 1550px;
+    height: 350px;
+    border-radius: 30px;
+    margin: auto;
+}
+
+.active-key {
+    background-color: aliceblue;
 }
 
 

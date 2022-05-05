@@ -1,6 +1,14 @@
+const keyBoardArea = document.createElement('div');
+keyBoardArea.className = 'keyboard-container';
+document.body.append(keyBoardArea);
+
+const textArea = document.createElement('textarea');
+textArea.className = 'text-area';
+keyBoardArea.appendChild(textArea);
+
 const keyboardWrapper = document.createElement('div');
 keyboardWrapper.className = 'keyboard-wrapper';
-document.body.append(keyboardWrapper);
+keyBoardArea.appendChild(keyboardWrapper);
 
 const row1 = document.createElement('div');
 
@@ -56,7 +64,7 @@ const numberKeys = [key1, key2, key3, key4, key5, key6, key7, key8, key9, key0];
 
 const firstRowKeys = [...mainFirstRowKeys, ...numberKeys];
 
-const mainFirstRowKeysNames = ['`', '-', '+', 'BackSpace'];
+const mainFirstRowKeysNames = ['`', '-', '=', 'BackSpace'];
 
 const numberKeysNames = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 
@@ -66,9 +74,9 @@ for (let i = 0; i < firstRowKeys.length; i += 1) {
   firstRowKeys[i].className = 'keys';
   row1.appendChild(firstRowKeys[i]);
   firstRowKeys[i].innerText = firstRowKeysNames[i];
-  mainFirstRowKeys[3].className = 'backspace';
-  mainFirstRowKeys[1].className = 'minus';
-  mainFirstRowKeys[2].className = 'plus';
+  mainFirstRowKeys[3].classList.add('backspace');
+  mainFirstRowKeys[1].classList.add('minus');
+  mainFirstRowKeys[2].classList.add('plus');
 }
 // -----------------------------------
 
@@ -110,7 +118,7 @@ const mainSecondRowKeys = [tab, squareBracketOpenKey, squareBracketCloseKey, sla
 
 const secondRowKeys = [...mainSecondRowKeys, ...firstRowLetterKeys];
 
-const mainSecondRowKeysNames = ['Tab', '[', ']', '\\', 'del'];
+const mainSecondRowKeysNames = ['Tab', '[', ']', '\\', 'Del'];
 
 const firstRowKLettersNames = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
 
@@ -120,11 +128,11 @@ for (let i = 0; i < secondRowKeys.length; i += 1) {
   secondRowKeys[i].className = 'keys';
   row2.appendChild(secondRowKeys[i]);
   secondRowKeys[i].innerText = secondRowKeysNames[i];
-  mainSecondRowKeys[0].className = 'midle-size-keys';
-  mainSecondRowKeys[4].className = 'del';
-  mainSecondRowKeys[3].className = 'open-slash';
-  mainSecondRowKeys[2].className = 'close-bracket';
-  mainSecondRowKeys[1].className = 'open-bracket';
+  mainSecondRowKeys[0].classList.add('tab');
+  mainSecondRowKeys[4].classList.add('del');
+  mainSecondRowKeys[3].classList.add('open-slash');
+  mainSecondRowKeys[2].classList.add('close-bracket');
+  mainSecondRowKeys[1].classList.add('open-bracket');
 }
 // -------------------------------
 
@@ -170,10 +178,10 @@ for (let i = 0; i < thirdRowKeys.length; i += 1) {
   thirdRowKeys[i].className = 'keys';
   row3.appendChild(thirdRowKeys[i]);
   thirdRowKeys[i].innerText = thirdRowKeysNames[i];
-  mainThirdRowKeys[3].className = 'enter';
-  mainThirdRowKeys[0].className = 'capslock';
-  mainThirdRowKeys[1].className = 'semicolon';
-  mainThirdRowKeys[2].className = 'tick';
+  mainThirdRowKeys[3].classList.add('enter');
+  mainThirdRowKeys[0].classList.add('capslock');
+  mainThirdRowKeys[1].classList.add('semicolon');
+  mainThirdRowKeys[2].classList.add('tick');
 }
 // -------------------------------
 
@@ -221,8 +229,8 @@ for (let i = 0; i < fourthRowKeys.length; i += 1) {
   fourthRowKeys[i].className = 'keys';
   row4.appendChild(fourthRowKeys[i]);
   fourthRowKeys[i].innerText = fourthRowKeysNames[i];
-  mainFourthRowKeys[0].className = 'left-shift';
-  mainFourthRowKeys[1].className = 'open-slash-two';
+  mainFourthRowKeys[0].classList.add('left-shift');
+  mainFourthRowKeys[1].classList.add('open-slash-two');
 }
 // -------------------------------
 
@@ -254,7 +262,112 @@ for (let i = 0; i < fivethRowKeys.length; i += 1) {
   fivethRowKeys[i].className = 'keys';
   row5.appendChild(fivethRowKeys[i]);
   fivethRowKeys[i].innerText = fivethRowKeysNames[i];
-  fivethRowKeys[0].className = 'midle-size-keys';
-  fivethRowKeys[5].className = 'midle-size-keys';
-  fivethRowKeys[3].className = 'space';
+  fivethRowKeys[0].classList.add('left-ctrl');
+  fivethRowKeys[5].classList.add('right-ctrl');
+  fivethRowKeys[3].classList.add('space');
 }
+
+const allKeys = [...firstRowKeys, ...secondRowKeys,
+  ...thirdRowKeys, ...fourthRowKeys, ...fivethRowKeys];
+
+function pushKey(event) {
+  if (event.target.classList.contains('keys') || event.target.classList.contains('keys')) {
+    event.target.classList.add('active-key');
+  }
+}
+
+function offKey(event) {
+  if (event.target.classList.contains('keys')) {
+    event.target.classList.remove('active-key');
+  }
+}
+
+function pushBoardKey(e) {
+  for (let i = 0; i < allKeys.length; i += 1) {
+    if (e.key === allKeys[i].innerText
+      || (e.key).toLowerCase() === allKeys[i].innerText.toLowerCase()) {
+      allKeys[i].classList.add('active-key');
+    } else if (e.key === 'ArrowDown') {
+      arrowBottom.classList.add('active-key');
+    } else if (e.key === 'ArrowLeft') {
+      arrowLeft.classList.add('active-key');
+    } else if (e.key === 'ArrowRight') {
+      arrowRight.classList.add('active-key');
+    } else if (e.key === 'ArrowUp') {
+      arrowTop.classList.add('active-key');
+    } else if (e.code === 'ControlLeft') {
+      ctrl.classList.add('active-key');
+    } else if (e.code === 'ControlRight') {
+      ctrl2.classList.add('active-key');
+    } else if (e.code === 'Delete') {
+      del.classList.add('active-key');
+    } else if (e.code === 'Space') {
+      space.classList.add('active-key');
+    } else if (e.code === 'MetaLeft') {
+      win.classList.add('active-key');
+    }
+  }
+}
+
+function offBoardKey(e) {
+  for (let i = 0; i < allKeys.length; i += 1) {
+    if (e.key === allKeys[i].innerText
+      || (e.key).toLowerCase() === allKeys[i].innerText.toLowerCase()) {
+      allKeys[i].classList.remove('active-key');
+    } else if (e.key === 'ArrowDown') {
+      arrowBottom.classList.remove('active-key');
+    } else if (e.key === 'ArrowLeft') {
+      arrowLeft.classList.remove('active-key');
+    } else if (e.key === 'ArrowRight') {
+      arrowRight.classList.remove('active-key');
+    } else if (e.key === 'ArrowUp') {
+      arrowTop.classList.remove('active-key');
+    } else if (e.code === 'ControlLeft') {
+      ctrl.classList.remove('active-key');
+    } else if (e.code === 'ControlRight') {
+      ctrl2.classList.remove('active-key');
+    } else if (e.code === 'Delete') {
+      del.classList.remove('active-key');
+    } else if (e.code === 'Space') {
+      space.classList.remove('active-key');
+    } else if (e.code === 'MetaLeft') {
+      win.classList.remove('active-key');
+    }
+  }
+}
+
+window.addEventListener('keydown', pushBoardKey);
+
+window.addEventListener('keyup', offBoardKey);
+
+allKeys.forEach((el) => el.addEventListener('mouseup', offKey));
+
+allKeys.forEach((el) => el.addEventListener('mousedown', pushKey));
+// ------------------------------------
+
+const textAreaArray = [];
+
+let position = 0;
+
+function cursorPrinter(e) {
+  if (e.target.classList.contains('keys') && e.target.innerText !== 'BackSpace' && e.target.innerText !== 'Del') {
+    textAreaArray.push(e.target.innerText);
+    textArea.textContent = textAreaArray.join('');
+    position += 1;
+  } else if (e.target.textContent === 'BackSpace') {
+    position = textArea.selectionStart - 1;
+    textAreaArray.splice(textArea.selectionStart - 1, 1);
+    textArea.textContent = textAreaArray.join('');
+  } else if (e.target.textContent === 'Del') {
+    position = textArea.selectionStart;
+    textAreaArray.splice(textArea.selectionStart, 1);
+    textArea.textContent = textAreaArray.join('');
+  }
+}
+
+allKeys.forEach((el) => el.addEventListener('mousedown', cursorPrinter));
+
+allKeys.forEach((el) => el.addEventListener('mouseup', () => {
+  textArea.focus();
+  textArea.selectionStart = position;
+}));
