@@ -32,6 +32,8 @@
     height: 90px;
     border-radius: 20px;
     background-color: lightslategray;
+    cursor: pointer;
+    user-select: none;
 }
 
 .minus {
@@ -120,6 +122,13 @@
     border-radius: 20px;
     background-color: lightslategray;
     order: -1;
+}
+
+.right-shift {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
 }
 
 .big-size-keys {
