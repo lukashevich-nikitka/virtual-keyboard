@@ -337,6 +337,8 @@ function offBoardKey(e) {
       space.classList.remove('active-key');
     } else if (e.code === 'MetaLeft') {
       win.classList.remove('active-key');
+    } else if (e.key === 'Tab') {
+      tab.preventDefault();
     }
   }
 }
@@ -354,14 +356,25 @@ const textAreaArray = [];
 
 let position = 0;
 
+let countCapsLock = 0;
+
 function cursorPrinter(e) {
   if (e.target.classList.contains('keys') && e.target.innerText !== 'BackSpace' && e.target.innerText !== 'Del'
   && e.target.innerText !== '←' && e.target.innerText !== '→' && e.target.innerText !== 'Space'
-  && e.target.innerText !== 'Tab' && e.target.innerText !== 'Enter') {
-    position = textArea.selectionStart;
-    textAreaArray.splice(textArea.selectionStart, 0, e.target.textContent);
-    textArea.textContent = textAreaArray.join('');
-    position += 1;
+  && e.target.innerText !== 'Tab' && e.target.innerText !== 'Enter' && e.target.innerText !== 'CapsLock'
+  && e.target.innerText !== '↑' && e.target.innerText !== '↓' && e.target.innerText !== 'Shift'
+  && e.target.innerText !== 'Alt' && e.target.innerText !== 'Ctrl' && e.target.innerText !== 'Win') {
+    if (countCapsLock % 2 === 0) {
+      position = textArea.selectionStart;
+      textAreaArray.splice(textArea.selectionStart, 0, e.target.textContent.toLowerCase());
+      textArea.textContent = textAreaArray.join('');
+      position += 1;
+    } else {
+      position = textArea.selectionStart;
+      textAreaArray.splice(textArea.selectionStart, 0, e.target.textContent.toUpperCase());
+      textArea.textContent = textAreaArray.join('');
+      position += 1;
+    }
   } else if (e.target.textContent === 'BackSpace' && position !== 0) {
     textArea.selectionEnd = textArea.selectionStart;
     position = textArea.selectionStart - 1;
@@ -372,8 +385,8 @@ function cursorPrinter(e) {
     textAreaArray.splice(textArea.selectionStart, 1);
     textArea.textContent = textAreaArray.join('');
   } else if (e.target.textContent === '←') {
-    textArea.selectionEnd = textArea.selectionStart;
     position = textArea.selectionStart - 1;
+    textArea.selectionEnd = position;
   } else if (e.target.textContent === '→') {
     textArea.selectionEnd = textArea.selectionStart;
     position = textArea.selectionStart + 1;
@@ -384,13 +397,23 @@ function cursorPrinter(e) {
     position += 1;
   } else if (e.target.textContent === 'Tab') {
     position = textArea.selectionStart;
-    textAreaArray.splice(textArea.selectionStart, 0, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+    textAreaArray.splice(textArea.selectionStart, 0, '\t');
     textArea.textContent = textAreaArray.join('');
     position += 8;
   } else if (e.target.textContent === 'Enter') {
     textAreaArray.splice(textArea.selectionStart, 0, '\n');
     textArea.textContent = textAreaArray.join('');
     position += 1;
+  } else if (e.target.textContent === 'CapsLock') {
+    countCapsLock += 1;
+  } else if (e.target.textContent === '↑') {
+    const idx = textAreaArray.indexOf('\n');
+    position = textArea.selectionStart - (idx + 1);
+    textArea.selectionEnd = position;
+  } else if (e.target.textContent === '↓') {
+    const idx = textAreaArray.indexOf('\n');
+    position = textArea.selectionStart + (idx + 1);
+    textArea.selectionEnd = position;
   }
 }
 
@@ -414,7 +437,6 @@ document.addEventListener('keydown', (e) => {
   pressedSet.add(e.code);
   const keys = [...pressedSet];
   if (keys[1] === codes[1] && keys[2] === codes[2] && keys.length === 2 && secondRowKeys[2].innerText !== 'Ъ') {
-    console.log('first language');
     for (let i = 0; i < secondRowKeys.length; i += 1) {
       secondRowKeys[i + 5].innerText = firstRowRussianLettersNames[i];
       secondRowKeys[1].innerText = 'X';
@@ -427,7 +449,6 @@ document.addEventListener('keydown', (e) => {
       fourthRowKeys[8].innerText = 'Я';
     }
   } else if (keys[1] === codes[1] && keys[2] === codes[2] && keys.length === 2 && secondRowKeys[2].innerText === 'Ъ') {
-    console.log('second language');
     for (let i = 0; i < secondRowKeys.length; i += 1) {
       secondRowKeys[i].innerText = secondRowKeysNames[i];
       secondRowKeys[14].innerText = 'P';
