@@ -120,9 +120,9 @@ const secondRowKeys = [...mainSecondRowKeys, ...firstRowLetterKeys];
 
 const mainSecondRowKeysNames = ['Tab', '[', ']', '\\', 'Del'];
 
-const firstRowKLettersNames = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
+const firstRowLettersNames = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
 
-const secondRowKeysNames = [...mainSecondRowKeysNames, ...firstRowKLettersNames];
+const secondRowKeysNames = [...mainSecondRowKeysNames, ...firstRowLettersNames];
 
 for (let i = 0; i < secondRowKeys.length; i += 1) {
   secondRowKeys[i].className = 'keys';
@@ -230,6 +230,7 @@ for (let i = 0; i < fourthRowKeys.length; i += 1) {
   row4.appendChild(fourthRowKeys[i]);
   fourthRowKeys[i].innerText = fourthRowKeysNames[i];
   mainFourthRowKeys[0].classList.add('left-shift');
+  mainFourthRowKeys[mainFourthRowKeys.length - 1].classList.add('right-shift');
   mainFourthRowKeys[1].classList.add('open-slash-two');
 }
 // -------------------------------
@@ -305,6 +306,10 @@ function pushBoardKey(e) {
       space.classList.add('active-key');
     } else if (e.code === 'MetaLeft') {
       win.classList.add('active-key');
+    } else if (e.code === 'ShiftLeft') {
+      shift.classList.add('active-key');
+    } else if (e.code === 'ShiftRight') {
+      shift2.classList.add('active-key');
     }
   }
 }
@@ -332,6 +337,8 @@ function offBoardKey(e) {
       space.classList.remove('active-key');
     } else if (e.code === 'MetaLeft') {
       win.classList.remove('active-key');
+    } else if (e.key === 'Tab') {
+      tab.preventDefault();
     }
   }
 }
@@ -349,12 +356,27 @@ const textAreaArray = [];
 
 let position = 0;
 
+let countCapsLock = 0;
+
 function cursorPrinter(e) {
-  if (e.target.classList.contains('keys') && e.target.innerText !== 'BackSpace' && e.target.innerText !== 'Del') {
-    textAreaArray.push(e.target.innerText);
-    textArea.textContent = textAreaArray.join('');
-    position += 1;
-  } else if (e.target.textContent === 'BackSpace') {
+  if (e.target.classList.contains('keys') && e.target.innerText !== 'BackSpace' && e.target.innerText !== 'Del'
+  && e.target.innerText !== '←' && e.target.innerText !== '→' && e.target.innerText !== 'Space'
+  && e.target.innerText !== 'Tab' && e.target.innerText !== 'Enter' && e.target.innerText !== 'CapsLock'
+  && e.target.innerText !== '↑' && e.target.innerText !== '↓' && e.target.innerText !== 'Shift'
+  && e.target.innerText !== 'Alt' && e.target.innerText !== 'Ctrl' && e.target.innerText !== 'Win') {
+    if (countCapsLock % 2 === 0) {
+      position = textArea.selectionStart;
+      textAreaArray.splice(textArea.selectionStart, 0, e.target.textContent.toLowerCase());
+      textArea.textContent = textAreaArray.join('');
+      position += 1;
+    } else {
+      position = textArea.selectionStart;
+      textAreaArray.splice(textArea.selectionStart, 0, e.target.textContent.toUpperCase());
+      textArea.textContent = textAreaArray.join('');
+      position += 1;
+    }
+  } else if (e.target.textContent === 'BackSpace' && position !== 0) {
+    textArea.selectionEnd = textArea.selectionStart;
     position = textArea.selectionStart - 1;
     textAreaArray.splice(textArea.selectionStart - 1, 1);
     textArea.textContent = textAreaArray.join('');
@@ -362,6 +384,36 @@ function cursorPrinter(e) {
     position = textArea.selectionStart;
     textAreaArray.splice(textArea.selectionStart, 1);
     textArea.textContent = textAreaArray.join('');
+  } else if (e.target.textContent === '←') {
+    position = textArea.selectionStart - 1;
+    textArea.selectionEnd = position;
+  } else if (e.target.textContent === '→') {
+    textArea.selectionEnd = textArea.selectionStart;
+    position = textArea.selectionStart + 1;
+  } else if (e.target.textContent === 'Space') {
+    position = textArea.selectionStart;
+    textAreaArray.splice(textArea.selectionStart, 0, ' ');
+    textArea.textContent = textAreaArray.join('');
+    position += 1;
+  } else if (e.target.textContent === 'Tab') {
+    position = textArea.selectionStart;
+    textAreaArray.splice(textArea.selectionStart, 0, '\t');
+    textArea.textContent = textAreaArray.join('');
+    position += 8;
+  } else if (e.target.textContent === 'Enter') {
+    textAreaArray.splice(textArea.selectionStart, 0, '\n');
+    textArea.textContent = textAreaArray.join('');
+    position += 1;
+  } else if (e.target.textContent === 'CapsLock') {
+    countCapsLock += 1;
+  } else if (e.target.textContent === '↑') {
+    const idx = textAreaArray.indexOf('\n');
+    position = textArea.selectionStart - (idx + 1);
+    textArea.selectionEnd = position;
+  } else if (e.target.textContent === '↓') {
+    const idx = textAreaArray.indexOf('\n');
+    position = textArea.selectionStart + (idx + 1);
+    textArea.selectionEnd = position;
   }
 }
 
@@ -371,3 +423,41 @@ allKeys.forEach((el) => el.addEventListener('mouseup', () => {
   textArea.focus();
   textArea.selectionStart = position;
 }));
+
+// ------------------------------------------
+
+const firstRowRussianLettersNames = ['Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З'];
+const secondRowRussianLettersNames = ['Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д'];
+const thirdRowRussianLettersNames = ['Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б'];
+
+const pressedSet = new Set();
+const codes = ['ShiftLeft', 'ControlLeft'];
+
+document.addEventListener('keydown', (e) => {
+  pressedSet.add(e.code);
+  const keys = [...pressedSet];
+  if (keys[1] === codes[1] && keys[2] === codes[2] && keys.length === 2 && secondRowKeys[2].innerText !== 'Ъ') {
+    for (let i = 0; i < secondRowKeys.length; i += 1) {
+      secondRowKeys[i + 5].innerText = firstRowRussianLettersNames[i];
+      secondRowKeys[1].innerText = 'X';
+      secondRowKeys[2].innerText = 'Ъ';
+      thirdRowKeys[i + 4].innerText = secondRowRussianLettersNames[i];
+      thirdRowKeys[1].innerText = 'Ж';
+      thirdRowKeys[2].innerText = 'Э';
+      fourthRowKeys[i].innerText = thirdRowRussianLettersNames[i];
+      fourthRowKeys[7].innerText = 'Shift';
+      fourthRowKeys[8].innerText = 'Я';
+    }
+  } else if (keys[1] === codes[1] && keys[2] === codes[2] && keys.length === 2 && secondRowKeys[2].innerText === 'Ъ') {
+    for (let i = 0; i < secondRowKeys.length; i += 1) {
+      secondRowKeys[i].innerText = secondRowKeysNames[i];
+      secondRowKeys[14].innerText = 'P';
+      thirdRowKeys[i].innerText = thirdRowKeysNames[i];
+      fourthRowKeys[i].innerText = fourthRowKeysNames[i];
+    }
+  }
+});
+
+document.addEventListener('keyup', () => {
+  pressedSet.clear();
+});

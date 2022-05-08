@@ -32,6 +32,8 @@
     height: 90px;
     border-radius: 20px;
     background-color: lightslategray;
+    cursor: pointer;
+    user-select: none;
 }
 
 .minus {
@@ -122,6 +124,13 @@
     order: -1;
 }
 
+.right-shift {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background-color: lightslategray;
+}
+
 .big-size-keys {
     width: 210px;
     height: 90px;
@@ -182,6 +191,8 @@ textarea {
 
 .active-key {
     background-color: aliceblue;
+    transform: scale(1.5);
+    opacity: 0.5;
 }
 
 
