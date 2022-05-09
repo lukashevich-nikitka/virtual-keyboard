@@ -413,23 +413,21 @@ function cursorPrinter(e) {
     textArea.selectionEnd = position;
   } else if (e.target.textContent === 'Enter') {
     position = textArea.selectionStart;
-    console.log(textArea.selectionStart);
-    console.log(textArea.selectionEnd);
-    console.log(position);
     textAreaArray.splice(textArea.selectionStart, 0, '\n');
     textArea.value = textAreaArray.join('');
     position += 1;
     textArea.selectionStart = position;
     textArea.selectionEnd = position;
-    console.log(textArea.selectionStart);
-    console.log(textArea.selectionEnd);
-    console.log(position);
   } else if (e.target.textContent === 'CapsLock') {
     countCapsLock += 1;
   } else if (e.target.textContent === '↑') {
     const idx = textAreaArray.indexOf('\n');
-    position = textArea.selectionStart - (idx + 1);
+    position = textArea.selectionEnd - (idx + 1);
+    textArea.selectionStart = position;
     textArea.selectionEnd = position;
+    console.log(textArea.selectionStart);
+    console.log(textArea.selectionEnd);
+    console.log(position);
   } else if (e.target.textContent === '↓') {
     const idx = textAreaArray.indexOf('\n');
     position = textArea.selectionStart + (idx + 1);
