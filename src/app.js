@@ -272,7 +272,7 @@ const allKeys = [...firstRowKeys, ...secondRowKeys,
   ...thirdRowKeys, ...fourthRowKeys, ...fivethRowKeys];
 
 function pushKey(event) {
-  if (event.target.classList.contains('keys') || event.target.classList.contains('keys')) {
+  if (event.target.classList.contains('keys')) {
     event.target.classList.add('active-key');
   }
 }
@@ -352,13 +352,14 @@ allKeys.forEach((el) => el.addEventListener('mouseup', offKey));
 allKeys.forEach((el) => el.addEventListener('mousedown', pushKey));
 // ------------------------------------
 
-const textAreaArray = [];
+let textAreaArray = [];
 
 let position = 0;
 
 let countCapsLock = 0;
 
 function cursorPrinter(e) {
+  textAreaArray = textArea.value.split('');
   if (e.target.classList.contains('keys') && e.target.innerText !== 'BackSpace' && e.target.innerText !== 'Del'
   && e.target.innerText !== '←' && e.target.innerText !== '→' && e.target.innerText !== 'Space'
   && e.target.innerText !== 'Tab' && e.target.innerText !== 'Enter' && e.target.innerText !== 'CapsLock'
@@ -367,23 +368,29 @@ function cursorPrinter(e) {
     if (countCapsLock % 2 === 0) {
       position = textArea.selectionStart;
       textAreaArray.splice(textArea.selectionStart, 0, e.target.textContent.toLowerCase());
-      textArea.textContent = textAreaArray.join('');
+      textArea.value = textAreaArray.join('');
       position += 1;
+      textArea.selectionEnd = position;
     } else {
       position = textArea.selectionStart;
       textAreaArray.splice(textArea.selectionStart, 0, e.target.textContent.toUpperCase());
-      textArea.textContent = textAreaArray.join('');
+      textArea.value = textAreaArray.join('');
       position += 1;
+      textArea.selectionEnd = position;
     }
-  } else if (e.target.textContent === 'BackSpace' && position !== 0) {
-    textArea.selectionEnd = textArea.selectionStart;
-    position = textArea.selectionStart - 1;
+  } else if (e.target.textContent === 'BackSpace') {
+    textArea.selectionStart = textArea.selectionEnd;
+    position = textArea.selectionStart;
     textAreaArray.splice(textArea.selectionStart - 1, 1);
-    textArea.textContent = textAreaArray.join('');
+    textArea.value = textAreaArray.join('');
+    position -= 1;
+    textArea.selectionStart = position;
+    textArea.selectionEnd = position;
   } else if (e.target.textContent === 'Del') {
     position = textArea.selectionStart;
     textAreaArray.splice(textArea.selectionStart, 1);
-    textArea.textContent = textAreaArray.join('');
+    textArea.value = textAreaArray.join('');
+    textArea.selectionEnd = position;
   } else if (e.target.textContent === '←') {
     position = textArea.selectionStart - 1;
     textArea.selectionEnd = position;
@@ -393,23 +400,34 @@ function cursorPrinter(e) {
   } else if (e.target.textContent === 'Space') {
     position = textArea.selectionStart;
     textAreaArray.splice(textArea.selectionStart, 0, ' ');
-    textArea.textContent = textAreaArray.join('');
+    textArea.value = textAreaArray.join('');
     position += 1;
+    textArea.selectionStart = position;
+    textArea.selectionEnd = position;
   } else if (e.target.textContent === 'Tab') {
     position = textArea.selectionStart;
     textAreaArray.splice(textArea.selectionStart, 0, '\t');
-    textArea.textContent = textAreaArray.join('');
-    position += 8;
-  } else if (e.target.textContent === 'Enter') {
-    textAreaArray.splice(textArea.selectionStart, 0, '\n');
-    textArea.textContent = textAreaArray.join('');
+    textArea.value = textAreaArray.join('');
     position += 1;
+    textArea.selectionStart = position;
+    textArea.selectionEnd = position;
+  } else if (e.target.textContent === 'Enter') {
+    position = textArea.selectionStart;
+    textAreaArray.splice(textArea.selectionStart, 0, '\n');
+    textArea.value = textAreaArray.join('');
+    position += 1;
+    textArea.selectionStart = position;
+    textArea.selectionEnd = position;
   } else if (e.target.textContent === 'CapsLock') {
     countCapsLock += 1;
   } else if (e.target.textContent === '↑') {
     const idx = textAreaArray.indexOf('\n');
-    position = textArea.selectionStart - (idx + 1);
+    position = textArea.selectionEnd - (idx + 1);
+    textArea.selectionStart = position;
     textArea.selectionEnd = position;
+    console.log(textArea.selectionStart);
+    console.log(textArea.selectionEnd);
+    console.log(position);
   } else if (e.target.textContent === '↓') {
     const idx = textAreaArray.indexOf('\n');
     position = textArea.selectionStart + (idx + 1);
@@ -432,11 +450,15 @@ const thirdRowRussianLettersNames = ['Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б'];
 
 const pressedSet = new Set();
 const codes = ['ShiftLeft', 'ControlLeft'];
+const letter = [']', 'Ъ'];
+let index = 0;
 
 document.addEventListener('keydown', (e) => {
   pressedSet.add(e.code);
   const keys = [...pressedSet];
-  if (keys[1] === codes[1] && keys[2] === codes[2] && keys.length === 2 && secondRowKeys[2].innerText !== 'Ъ') {
+  if (keys[1] === codes[1] && keys[2] === codes[2] && keys.length === 2
+    && letter[index] === ']') {
+    index += 1;
     for (let i = 0; i < secondRowKeys.length; i += 1) {
       secondRowKeys[i + 5].innerText = firstRowRussianLettersNames[i];
       secondRowKeys[1].innerText = 'X';
@@ -448,7 +470,9 @@ document.addEventListener('keydown', (e) => {
       fourthRowKeys[7].innerText = 'Shift';
       fourthRowKeys[8].innerText = 'Я';
     }
-  } else if (keys[1] === codes[1] && keys[2] === codes[2] && keys.length === 2 && secondRowKeys[2].innerText === 'Ъ') {
+  } else if (keys[1] === codes[1] && keys[2] === codes[2] && keys.length === 2
+    && letter[index] === 'Ъ') {
+    index -= 1;
     for (let i = 0; i < secondRowKeys.length; i += 1) {
       secondRowKeys[i].innerText = secondRowKeysNames[i];
       secondRowKeys[14].innerText = 'P';
@@ -461,3 +485,19 @@ document.addEventListener('keydown', (e) => {
 document.addEventListener('keyup', () => {
   pressedSet.clear();
 });
+
+// ----------------local Storage-------------
+
+// function setLocalStorage() {
+//   localStorage.setItem('language', index);
+// }
+
+// window.addEventListener('beforeunload', setLocalStorage);
+
+// function getLocalStorage() {
+//   if (localStorage.getItem('language')) {
+//     index = +localStorage.getItem('language');
+//   }
+// }
+
+// window.addEventListener('load', getLocalStorage);
