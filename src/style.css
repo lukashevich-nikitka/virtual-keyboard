@@ -189,6 +189,11 @@ textarea {
     margin: auto;
 }
 
+.disclaimer {
+    font-size: 50px;
+    margin: 0 auto;
+}
+
 .active-key {
     background-color: aliceblue;
     transform: scale(1.5);
