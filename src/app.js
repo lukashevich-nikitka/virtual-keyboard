@@ -10,6 +10,11 @@ const keyboardWrapper = document.createElement('div');
 keyboardWrapper.className = 'keyboard-wrapper';
 keyBoardArea.appendChild(keyboardWrapper);
 
+const disclaimer = document.createElement('div');
+disclaimer.className = 'disclaimer';
+keyBoardArea.appendChild(disclaimer);
+disclaimer.innerText = 'Операционная система Windows! \nПереключение между языками: Left Shift + Left Ctrl';
+
 const row1 = document.createElement('div');
 
 const row2 = document.createElement('div');
